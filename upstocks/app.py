@@ -190,7 +190,7 @@ def history():
         print(row[0],row[1],row[2],row[3])
         
     
-    return render_template("stocks.html" , history = history)
+    return render_template("stocks.html" , stocks = history)
 
 @app.route("/logout")
 def logout():
