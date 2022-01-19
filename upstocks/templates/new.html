@@ -1,0 +1,77 @@
+<html>
+    <head>
+        <title> new </title>
+    </head>
+    <body>
+<style>
+    div{
+        text-align:center;
+        display:none;
+    }
+    h6{
+        color:red;
+    }
+    button{
+        float:right;
+    }
+</style>
+
+        <script>
+        function showPage(page) {
+
+    // Hide all of the divs:
+    document.querySelectorAll('div').forEach(div => {
+        div.style.display = 'none';
+    });
+
+    // Show the div provided in the argument
+    document.querySelector(`#${page}`).style.display = 'block';
+}
+
+// Wait for page to loaded:
+document.addEventListener('DOMContentLoaded', function() {
+
+    // Select all buttons
+    document.querySelectorAll('button').forEach(button => {
+
+        // When a button is clicked, switch to that page
+        button.onclick = function() {
+            showPage(this.dataset.page);
+        }
+    })
+});
+
+</script>
+
+
+
+
+<br>
+<button  data-page = "page1">  LOGIN </button>
+<button  data-page = "page2">  SIGNUP</button>
+</br>
+      <div id="page1">
+        <form action = "/login" method = "post">
+                                                    <h6>LOGIN</h6>
+              <br><input type = "text" name = "username" id = "username" autocomplete = on autofocus placeholder = "USERNAME"></br>
+              <br><input type = "password" name = "password" id = "password"placeholder = "PASSWORD"></br>
+              <br><input type = "checkbox" name = "agreement" id = "agreement">I AGREE TO ALL THE TERMS AND CONDITION </br>
+              <br><input type = "submit"   value = "LOGIN"> </br>
+        </form>
+      </div>
+
+      <div id = "page2">
+        <form action = "/signup" method = "post">
+                                                   <h6>SIGNUP</h6>
+            <br>  <input type = "text"     name = "username" id = "username" autocomplete = on autofocus placeholder = "USERNAME"></br>
+            <br>  <input type = "password" name = "password"id = "password" placeholder = "PASSWORD"></br>
+            <br>  <input type = "password" name = "cpassword" id = "cpassword"placeholder = "confirm password"></br>
+            <br>  <input type = "submit"  value = "register">
+        </form>
+      </div>
+
+
+
+
+</body>
+</html>

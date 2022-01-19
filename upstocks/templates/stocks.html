@@ -1,0 +1,150 @@
+<html>
+    <head>
+        <title> STOCKS </title>
+    </head>
+    <body>
+<style>
+#naa{
+    text-align:right;
+}
+    div{
+        text-align:center;
+        display:none;
+    }
+    h6{
+        color:red;
+    }
+    button{
+        float:right;
+    }
+    h3{
+        text-align:left;
+    }
+</style>
+
+        <script>
+        function showPage(page) {
+
+    // Hide all of the divs:
+    document.querySelectorAll('div').forEach(div => {
+        div.style.display = 'none';
+    });
+
+    // Show the div provided in the argument
+    document.querySelector(`#${page}`).style.display = 'block';
+}
+
+// Wait for page to loaded:
+document.addEventListener('DOMContentLoaded', function() {
+
+    // Select all buttons
+    document.querySelectorAll('button').forEach(button => {
+
+        // When a button is clicked, switch to that page
+        button.onclick = function() {
+            showPage(this.dataset.page);
+        }
+    })
+});
+
+</script>
+
+<h3> UPSTOCKS  </h3>
+<h3 id = naa> {{ name }} </h3>
+
+
+<br>
+
+ </br>
+<hr />
+<br>
+<button  data-page = "page1">  BUY </button>
+<button  data-page = "page2">  SELL</button>
+<button  data-page = "page3">  QUOTE </button>
+<button  data-page = "page4">  HISTORY</button>
+</br>
+     <h1> {{ message}} </h1>
+<hr />
+      <div id = "page2">
+
+
+                                <form action="/sell" method="post">
+                                    {{ craxe }}
+                                        {% for raw in raws %}
+                                        {{ raw }}
+                                    {% endfor %}
+            <br><input autoComplete="off" autoFocus id = "symbol" name="symbol" placeholder="Symbol" type="text"/></br>
+            <br><input autoComplete="off" id = "shares" min="0" name="shares" placeholder="Shares" type="number"/></br>
+                     <br>    <input type="submit" value = SEll></br>
+
+
+                                </form>
+                        </div>
+
+
+
+      <div id = "page1">
+
+
+                                <form action="/buy" method="post">
+        <br>  <input autoComplete="off" autoFocus id = "symbol" name="symbol" placeholder="Symbol" type="text"/></br>
+        <br>   <input autoComplete="off"  id = "shares" name="shares" placeholder="Shares" type="number" min="0"/></br>
+                        <br>    <input type="submit" value = Buy></br>
+
+                                </form>
+                            </div>
+
+        <div id = "page4">
+                                <hr />
+                                <table>
+        <thead>
+            <tr>
+                <th>Symbol</th>
+                <th>Operation</th>
+                <th>Price</th>
+                <th>Shares</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for row in history %}
+                    <th> {{ row [0] }} </th>
+                    <th> {{ row [1] }} </th>
+                    <th> {{ row [2] }} </th>
+                    <th> {{ row [3] }} </th>
+                {% endfor %}
+            </tr>
+        </tbody>
+    </table>
+                            </div>
+
+
+                           <div id = "page3">
+                                <hr />
+                                <h6>{{ row }}</h6>
+                                <form action="/quote" method="post">
+       <br>      <input autoComplete="off" autoFocus id = "symbol" name="symbol" placeholder="Symbol" type="text"/></br>
+
+                        <br>            <input type="submit" value = "quote">    </br>
+
+                                </form>
+                            </div>
+
+
+
+</body>
+</html>
+    <body>
+
+
+
+
+
+
+
+
+
+
+
+
+
