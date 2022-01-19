@@ -9,7 +9,7 @@ import requests
 import json
 import urllib.parse
 
-con = sql.connect(r'C:\Users\Home\sqlite\test.db' , check_same_thread=False)
+con = sql.connect(r'C:\Users\Home\sqlite\test.db' , check_same_thread=False) // # use the location as per your sqlite3 dwld file and db file location
 cur = con.cursor()
 
 app = Flask(__name__)
