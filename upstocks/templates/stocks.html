@@ -95,28 +95,27 @@ document.addEventListener('DOMContentLoaded', function() {
                             </div>
 
         <div id = "page4">
-                                <hr />
-                                <table>
-        <thead>
-            <tr>
-                <th>Symbol</th>
-                <th>Operation</th>
-                <th>Price</th>
-                <th>Shares</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                {% for row in history %}
-                    <th> {{ row [0] }} </th>
-                    <th> {{ row [1] }} </th>
-                    <th> {{ row [2] }} </th>
-                    <th> {{ row [3] }} </th>
-                {% endfor %}
-            </tr>
-        </tbody>
-    </table>
-                            </div>
+        <hr />
+                   <table>
+                       <tr>
+                           <th>SYMBOL</th>
+                           <th>OPERATION</th>
+                           <th>PRICE</th>
+                           <th>SHARES</th>
+
+                       </tr>
+                     {% for stock in stocks %}
+                       <tr>
+                           <td> {{ stock[0] }}</td>
+                           <td> {{ stock[1] }}</td>
+                           <td> {{ stock[2] }}</td>
+                           <td> {{ stock[3] }}</td>
+                       </tr>
+                     {% endfor %}
+                   </table>
+
+
+        </div>
 
 
                            <div id = "page3">
