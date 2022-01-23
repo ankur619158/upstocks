@@ -4,16 +4,29 @@
     </head>
     <body>
 <style>
-    div{
-        text-align:center;
-        display:none;
-    }
-    h6{
-        color:red;
-    }
-    button{
-        float:right;
-    }
+        div{
+            text-align:center;
+            display:none;
+        }
+        h6{
+            color:red;
+        }
+        button{
+            float:right;
+        }
+        .container {
+            border-radius: 5px;
+            background-color: #918989;
+            padding: 20px;
+        }
+
+
+/* Style the topnav links */
+
+
+/* Change color on hover */
+
+
 </style>
 
         <script>
@@ -47,12 +60,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
 <br>
-<button  data-page = "page1">  LOGIN </button>
-<button  data-page = "page2">  SIGNUP</button>
+<button  data-page = "page1">LOGIN</button>
+<button  data-page = "page2">SIGNUP</button>
+
+<hr>
 </br>
-      <div id="page1">
+      <div class = "container" id="page1">
         <form action = "/login" method = "post">
-                                                    <h6>LOGIN</h6>
+                                                    <h1>LOGIN</h1>
+                                                    <hr>
               <br><input type = "text" name = "username" id = "username" autocomplete = on autofocus placeholder = "USERNAME"></br>
               <br><input type = "password" name = "password" id = "password"placeholder = "PASSWORD"></br>
               <br><input type = "checkbox" name = "agreement" id = "agreement">I AGREE TO ALL THE TERMS AND CONDITION </br>
@@ -60,9 +76,10 @@ document.addEventListener('DOMContentLoaded', function() {
         </form>
       </div>
 
-      <div id = "page2">
+      <div class = "container" id = "page2">
         <form action = "/signup" method = "post">
-                                                   <h6>SIGNUP</h6>
+                                                   <h1>SIGNUP</h1>
+                                                   <hr>
             <br>  <input type = "text"     name = "username" id = "username" autocomplete = on autofocus placeholder = "USERNAME"></br>
             <br>  <input type = "password" name = "password"id = "password" placeholder = "PASSWORD"></br>
             <br>  <input type = "password" name = "cpassword" id = "cpassword"placeholder = "confirm password"></br>
