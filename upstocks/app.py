@@ -9,7 +9,7 @@ import requests
 import json
 import urllib.parse
 
-con = sql.connect(r'C:\Users\Home\sqlite\test.db' , check_same_thread=False) // # use the location as per your sqlite3 dwld file and db file location
+con = sql.connect(r'C:\Users\Home\sqlite\test.db' , check_same_thread=False)
 cur = con.cursor()
 
 app = Flask(__name__)
@@ -22,7 +22,7 @@ mail=Mail(app)
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'ankurshukla146@gmail.com'
-app.config['MAIL_PASSWORD'] = input()
+app.config['MAIL_PASSWORD'] = 'Aristarchus@123'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 mail = Mail(app)
@@ -31,28 +31,39 @@ mail = Mail(app)
 @app.route("/" , methods = ["GET" , "POST"])
 def index():
     if session.get("userid") is None:
-        return redirect("/login")
+        return redirect("/signup")
     name = str(session.get("userid"))
-    row = cur.execute("SELECT * FROM portfolio where username = ?;" , (name , ))
-    print(row)
-    return render_template("stocks.html",name = name)
+    datas = cur.execute("SELECT symbol,shares FROM portfolio where username = ?;" , (name ,)).fetchall()
+    price = cur.execute("SELECT cash FROM users where username = ?;",(name ,))
+    
+    return render_template("stocks.html",datas=datas)
 
 
 @app.route("/login" , methods = ["GET","POST"])
 def login():
     if request.method == "POST":
         name = request.form["username"]
-        
         password = request.form["password"]
         rows = cur.execute("SELECT * FROM users WHERE username = ?;",(name,))
-        con.commit()
+        if rows == "None":
+            return render_template("error.html" , message = "incorrect credentials")
+        data = []
         for row in rows:
-            row = list(row)
-        if (check_password_hash(row[2] , password)):
-            session['userid'] = name
-            return redirect("/")
+            data.append(row)
+        print(data)
+        if len(data) == 0:
+            return render_template("error.html" , message = "invalid credentials")
         else:
-            return render_template("error.html",message = row)
+            if check_password_hash(data[0][2] , password):
+                session['userid'] = name
+                return redirect("/")
+            else:
+                
+                return render_template("error.html",message = "invalid password")
+            
+        
+        
+
         
 
     else:
@@ -72,10 +83,9 @@ def signup():
             cur.execute("INSERT INTO users (username,hash) VALUES (?,?);",(name,generate_password_hash(password)))
             session['userid'] = name
             con.commit()
-            return render_template("stocks.html" , message = "registeration successfull")
+            return redirect("/")
         else:
             return render_template("error.html" , message = "both password didn't match")
-        return render_template("error.html" , message = "registeration successfull")
     else:
         return render_template("new.html")
 
@@ -89,6 +99,8 @@ def buy():
         shares = request.form['shares']
         
         look = lookup(symbol)
+        if not look:
+            return render_template("error.html" , message = "API PROCESS IS NOT WORKING")
        
         
         username = str(session.get("userid"))
@@ -98,7 +110,7 @@ def buy():
         cash = line[0][3]
        
         value = int(look["price"])*int(shares)
-        print(type(value))
+        
         if value < cash:
             cur.execute("UPDATE users SET cash = cash - ? WHERE username = ?",(int(value), username))
             con.commit()
@@ -118,7 +130,7 @@ def buy():
             
         else:
             return render_template("error.html",message = "you donot have enough money")
-        return render_template("stocks.html", message = "Bought")
+        return render_template("stocks.html", bmessage = "Bought")
         
     else:
         return render_template("stocks.html")
@@ -128,20 +140,27 @@ def sell():
     username = str(session.get("userid") )
     if request.method == "POST":
         symbol = request.form['symbol']
+        
+        shares = int(request.form['shares'])
         symbols = cur.execute("SELECT symbol FROM portfolio WHERE username = ?;",(username,)).fetchall()
+           
         sym = []
         for i in symbols:
             sym.append(i[0])
-        print("THIS IS SYMBLLS",sym)
-        shares = int(request.form['shares'])
+        print(sym)
+        
         if symbol not in sym:
-            return render_template("stocks.html",message = "you don't have this company shares")
+            return render_template("error.html",message = "you don't have this company shares")
         look = lookup(symbol)
+        
+        if not look:
+            return render_template("error.html" , message = "API PROCESS IS NOT WORKING")
+
         value = int(look["price"])*int(shares)
         
         shares_v = cur.execute("SELECT shares FROM portfolio WHERE username = ? and symbol = ?;",(username,symbol)).fetchone()
         
-        print("UPSIDE",shares_v)
+        
         if (int(shares_v[0]) < shares):
             return render_template("error.html" , message = "not enough shares")
         else:
@@ -149,17 +168,17 @@ def sell():
             con.commit()
             cur.execute("INSERT INTO history (username,operation,symbol,price,shares) VALUES (?,?,?,?,?)",(username,'SOLD',look['symbol'],look['price'] , shares))
             con.commit()
-            print("THIS",shares_v[0])
-            print("SHARES",shares)
+            
+            
             if int(shares_v[0]) == shares:
-                print("i am here")
+                
                 cur.execute("DELETE FROM portfolio WHERE username = ? AND symbol = ? ;" ,(username,symbol))
                 con.commit()
             else:
                 cur.execute("UPDATE portfolio SET shares = shares - ? WHERE username = ? AND symbol = ? ;",(shares,username,symbol))
                 con.commit()
             
-            return render_template("stocks.html", message = "SOLD")
+            return render_template("stocks.html", smessage = "SOLD")
         
     else:
         
@@ -167,7 +186,7 @@ def sell():
         raws = list(raws)
         for raw in raws:
             print(raw[3])
-        return render_template("stocks.html",raws = raws , craxe = "you have shares of")
+        return render_template("stocks.html")
 
 @app.route("/quote" , methods = ["GET","POST"])
 def quote():
@@ -176,16 +195,19 @@ def quote():
         print(symbol)
         
         rows = lookup(symbol)
+        if not rows:
+            return render_template("error.html" , message = "API PROCESS IS NOT WORKING")
+            
         price = rows["price"]
         print(rows)
-        return render_template("stocks.html" , message =f" The price of {symbol} is {price}")
+        return render_template("stocks.html" , qmessage =f" The price of {symbol} is {price}")
     else:
         return render_template("stocks.html")
 
 @app.route("/history" ,methods = ["GET","POST"])
 def history():
     username = str(session.get("userid"))
-    history = cur.execute("SELECT symbol,operation,price,shares FROM history WHERE username = ?;",(username,))
+    history = cur.execute("SELECT symbol,operation,price,shares FROM history WHERE username = ?;",(username,)).fetchall()
     for row in history:
         print(row[0],row[1],row[2],row[3])
         
@@ -229,4 +251,6 @@ def lookup(symbol):
 
 
     
+        
+   
         
