@@ -1,0 +1,205 @@
+<!DOCTYPE html>  
+<html>
+    <head>
+        <title> STOCKS </title>
+    </head>
+    <body>
+<style>
+#naa{
+    text-align:right;
+}
+body{
+  background: black;
+}
+    span{
+        text-align:center;
+        display:none;
+    }
+    h6{
+        color:red;
+    }
+    button{
+        
+        width: 70px;
+        height:30px;
+        margin:10px;
+    }
+    h3{
+        margin-left: 5px;
+        text-align:left;
+        display: inline;
+        font-weight: bold;
+        font-size: 30px;
+        color:rgb(249, 249, 253);
+    }
+    #buy{
+      margin-left: 350px;
+    }
+    .container1{
+      border:solid;
+      margin:50px;
+      height: 500px;
+      margin-left: 150px;
+      margin-right: 150px;
+      background: grey;
+      }
+      form{
+        margin-top: 100px;
+      }
+      input{
+        font-size: 30px;
+      }
+      table {
+        border-collapse: collapse;
+        border-spacing: 0;
+        width: 100%;
+        border: 1px solid #ddd;
+      }
+
+      th, td {
+        text-align: left;
+        padding: 16px;
+      }
+      th{
+        background: grey;
+      }
+      tr:nth-child(even) {
+        background-color: #f2f2f2;
+      }
+      tr:nth-child(odd) {
+        background-color: #1f55ebb2;
+      }
+
+</style>
+
+        <script>
+        function showPage(page) {
+
+    // Hide all of the divs:
+    document.querySelectorAll('span').forEach(span => {
+        span.style.display = 'none';
+    });
+
+    // Show the div provided in the argument
+    document.querySelector(`#${page}`).style.display = 'block';
+}
+
+// Wait for page to loaded:
+document.addEventListener('DOMContentLoaded', function() {
+
+    // Select all buttons
+    document.querySelectorAll('button').forEach(button => {
+
+        // When a button is clicked, switch to that page
+        button.onclick = function() {
+            showPage(this.dataset.page);
+        }
+    })
+});
+
+</script>
+<div style="height: 40px; margin-left: 10px;">
+<button style="width: 100px;" data-page="page5"><a style="color:black; " href="/">UPSTOCKS</a></button> 
+<h3 id = "topics" > {{ name }} </h3>
+<button  id = "buy" data-page = "page1">  BUY </button>
+<button  id = "sell" data-page = "page2">  SELL</button>
+<button  id = "quote" data-page = "page3">  QUOTE </button>
+<button  id = "history" data-page = "page4"><a href = "/history">HISTORY</a></button>
+<button style="float: right;" id = "logout"><a href = "/logout">LOGOUT</a></button>
+</div>
+     <h1 style="color: aliceblue;"> {{ message}} </h1>
+<hr />
+<div class = "container1">  
+<span id="page5">
+
+  <table>
+    <tr>
+      <th>SYMBOL</th>
+      <th>SHARES</th>
+      <th>PRICE</th>
+      <th>DATE&TIME</th>
+    </tr>
+  {% for i in datas %}
+    <tr>
+      <td> {{ i[0] }}</td>
+      <td> {{ i[1] }}</td>
+      <td> {{ i[2] }}</td>
+      <td> {{ i[3] }}</td>
+    </tr>
+  {% endfor %}
+</table> 
+</span>
+
+
+  
+    <span id = "page1">
+      <h1 style="margin-top: 50px;">BUY</h1>
+      <hr/>
+      <h1>{{bmessage}}</h1>
+      <form action="/buy" method="post">
+        <br><input autoComplete="off" autoFocus id = "symbol" name="symbol" placeholder="Symbol" type="text"/></br>
+        <br><input autoComplete="off"  id = "shares" name="shares" placeholder="Shares" type="number" min="0"/></br>
+        <br><input type="submit" value = Buy></br>
+      </form>
+    </span>
+
+    <span id = "page2">
+      <h1 style="margin-top: 50px;">SELL</h1>
+      <hr/>
+      <h1>{{smessage}}</h1>
+      <form action="/sell" method="post">
+                                    {{ craxe }}
+                                        {% for raw in raws %}
+                                        {{ raw }}
+                                    {% endfor %}
+        <br><input autoComplete="off" autoFocus id = "symbol" name="symbol" placeholder="Symbol" type="text"/></br>
+        <br><input autoComplete="off" id = "shares" min="0" name="shares" placeholder="Shares" type="number"/></br>
+        <br><input type="submit" value = SEll></br>
+      </form>
+    </span>
+
+    <span id = "page3">
+      <h1 style="margin-top: 50px;">QUOTE</h1>
+      <hr/>
+      <form action="/quote" method="post">
+        <br><input autoComplete="off" autoFocus id = "symbol" name="symbol" placeholder="Symbol" type="text"/></br>
+        <br><input type="submit" value = "quote">    </br>
+      </form>
+      <h6 style="text-align: center; font-size: 30px; color:rgb(241, 15, 185);">{{ qmessage }}</h6>
+    </span>
+
+    <span id = "page4">
+      <h1 style="margin-top: 50px;">HISTORY</h1>
+      <hr/>
+        <table>
+            <tr>
+              <th>SYMBOL</th>
+              <th>OPERATION</th>
+              <th>PRICE</th>
+              <th>SHARES</th>
+            </tr>
+          {% for stock in stocks %}
+            <tr>
+              <td> {{ stock[0] }}</td>
+              <td> {{ stock[1] }}</td>
+              <td> {{ stock[2] }}</td>
+              <td> {{ stock[3] }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      </span>
+  </div>
+</body>
+</html>
+    
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>UPSTOCKS/SIGNUP</title>
+    <style>
+      .container{
+        margin:100px;
+        border:solid;
+        height: 400px;
+        width: 700px;
+        justify-content: center;
+        margin-left: 300px;
+        background: grey;
+        border-radius: 10px;
+      }
+      input{
+        font-size: 30px;
+        text-align: center;
+        
+      }
+      input:active{
+        border:blue;
+        float: inline-start;
+        margin:5px;
+      }
+      input:focus{
+          border-color: blue;
+      }
+      form{
+        float:inherit;
+        margin-left: 150px;
+        margin-top: 50px;
+
+      }
+      #name{
+        margin:5px;
+      }
+      #password{
+        margin:5px;
+      }
+      #submit{
+        margin:10px;
+        margin-left: 100px;
+        color:rgb(53, 134, 241);
+        border:solid;
+      }
+      h1{
+        text-align: center;
+        color:rgb(25, 0, 255);
+      }
+      #cpassword{
+          margin-top: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1> SIGNUP </h1>
+      <hr />
+      <form action="/signup" method = "post">
+        <br /><input type = "text"  name = "username" id = "username" placeholder="ENTER NAME"/>
+        <br /><input type = "password" name="password" id = "password" placeholder="ENTER PASSWORD"/>
+        <br /><input style = "margin-left: 5px" type = "password" name="cpassword" id = "cpassword" placeholder="CONFIRM PASSWORD"/>
+        <br /><input id = "submit" type = "submit" value="REGISTER">
+      </form>
+    </div>
+  </body>
+</html>

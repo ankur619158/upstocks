@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>UPSTOCKS/LOGIN</title>
+    <style>
+      .container{
+        margin:100px;
+        border:solid;
+        height: 400px;
+        width: 700px;
+        justify-content: center;
+        margin-left: 300px;
+        background: grey;
+        border-radius: 10px;
+      }
+      input{
+        font-size: 30px;
+        text-align: center;
+        
+      }
+      input:active{
+        border:blue;
+        margin-top: 5px;
+      }
+      form{
+        float:inherit;
+        margin-left: 150px;
+        margin-top: 50px;
+      }
+      #name{
+        margin:5px;
+      }
+      #password{
+        margin:5px;
+      }
+      #submit{
+        margin:10px;
+        margin-left: 140px;
+        color:rgb(53, 134, 241);
+        border:solid;
+      }
+      h1{
+        text-align: center;
+        color:rgb(25, 0, 255);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1> LOGIN </h1>
+      {{message}}
+      <hr />
+      <form action="/login" method="post">
+        <br /><input type = "text" autofocus name = "username" id = "username" placeholder="ENTER NAME"/>
+        <br /><input type = "password" name="password" id = "password" placeholder="ENTER PASSWORD"/>
+        <br /><input id = "submit" type = "submit" value="LOGIN">
+      </form>
+    </div>
+  </body>
+</html>
